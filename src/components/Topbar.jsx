@@ -55,7 +55,7 @@ const Topbar = () => {
                   key={item}
                   onClick={() => setRole(item)}
                   className={clsx(
-                    "relative flex items-center gap-2 px-3 md:px-4 py-1.5 rounded-lg text-sm font-bold transition-all z-10 cursor-pointer",
+                    "relative flex items-center gap-2 px-3 py-1 rounded-lg text-sm font-bold transition-all z-10 cursor-pointer",
                     isActive
                       ? "text-slate-900"
                       : "text-slate-500 hover:text-slate-700",

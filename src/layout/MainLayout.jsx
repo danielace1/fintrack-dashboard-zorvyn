@@ -62,7 +62,7 @@ const MainLayout = () => {
         </header>
 
         <main className="flex-1 overflow-y-auto scroll-smooth">
-          <div className="max-w-[1400px] mx-auto p-4 md:p-8">
+          <div className="max-w-[1400px] mx-auto p-4 md:p-5">
             <AnimatePresence mode="wait">
               <motion.div
                 key={location.pathname}

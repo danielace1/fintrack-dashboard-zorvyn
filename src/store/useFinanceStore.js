@@ -1,12 +1,23 @@
 import { create } from "zustand";
+import { fetchTransactions } from "../data/mockData";
 
 export const useFinanceStore = create((set) => ({
   role: "viewer",
   setRole: (role) => set({ role }),
 
   transactions: [],
+  loading: false,
 
-  setTransactions: (data) => set({ transactions: data }),
+  loadTransactions: async () => {
+    set({ loading: true });
+
+    const data = await fetchTransactions();
+
+    set({
+      transactions: data,
+      loading: false,
+    });
+  },
 
   addTransaction: (tx) =>
     set((state) => ({
