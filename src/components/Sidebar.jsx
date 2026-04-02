@@ -1,42 +1,105 @@
-import { LayoutDashboard, Receipt, BarChart3 } from "lucide-react";
+import {
+  LayoutDashboard,
+  Receipt,
+  BarChart3,
+  Settings,
+  LogOut,
+  ChevronRight,
+} from "lucide-react";
+import { Link, useLocation } from "react-router";
+import { motion } from "framer-motion";
 import clsx from "clsx";
 
-const Sidebar = () => {
+const Sidebar = ({ onClose }) => {
+  const location = useLocation();
+
   const menu = [
-    { name: "Dashboard", icon: LayoutDashboard },
-    { name: "Transactions", icon: Receipt },
-    { name: "Insights", icon: BarChart3 },
+    { name: "Dashboard", icon: LayoutDashboard, path: "/" },
+    { name: "Transactions", icon: Receipt, path: "/transactions" },
+    { name: "Insights", icon: BarChart3, path: "/insights" },
   ];
 
-  const active = "Dashboard";
-
   return (
-    <div className="w-64 bg-white/80 backdrop-blur-xl border-r border-gray-200 p-5">
-      {/* Logo */}
-      <h1 className="text-2xl font-bold mb-10 text-blue-600 tracking-tight">
-        FinTrack
-      </h1>
+    <div className="h-full flex flex-col bg-white p-4 w-full">
+      <div className="flex items-center gap-3 px-2 mb-10">
+        <div className="h-9 w-9 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-200">
+          <div className="h-4 w-4 bg-white rounded-sm rotate-45" />
+        </div>
+        <h1 className="text-xl font-bold tracking-tight text-slate-900">
+          FinTrack<span className="text-indigo-600">.</span>
+        </h1>
+      </div>
 
-      {/* Menu */}
-      <nav className="space-y-2">
-        {menu.map((item, index) => {
+      <nav className="flex-1 space-y-1">
+        {menu.map((item) => {
           const Icon = item.icon;
+          const isActive = location.pathname === item.path;
 
           return (
-            <div
-              key={index}
+            <Link
+              key={item.name}
+              to={item.path}
+              onClick={onClose}
               className={clsx(
-                "flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all duration-200",
-                "hover:bg-gray-100 hover:shadow-sm",
-                active === item.name && "bg-blue-50 text-blue-600 shadow-sm",
+                "group relative flex items-center justify-between p-3 rounded-xl transition-all duration-200",
+                isActive
+                  ? "bg-indigo-50 text-indigo-600 shadow-sm shadow-indigo-100/50"
+                  : "text-slate-500 hover:bg-slate-50 hover:text-slate-900",
               )}
             >
-              <Icon size={18} />
-              <span className="font-medium">{item.name}</span>
-            </div>
+              <div className="flex items-center gap-3">
+                <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
+                <span
+                  className={clsx(
+                    "font-semibold text-sm",
+                    isActive
+                      ? "opacity-100"
+                      : "opacity-80 group-hover:opacity-100",
+                  )}
+                >
+                  {item.name}
+                </span>
+              </div>
+
+              {isActive && (
+                <motion.div
+                  layoutId="sidebar-active-indicator"
+                  className="h-5 w-1 bg-indigo-600 rounded-full absolute left-0"
+                />
+              )}
+
+              {isActive && <ChevronRight size={14} className="opacity-50" />}
+            </Link>
           );
         })}
       </nav>
+
+      <div className="pt-6 mt-6 border-t border-slate-100 space-y-1">
+        <button
+          onClick={onClose}
+          className="w-full flex items-center gap-3 p-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 transition-all cursor-pointer"
+        >
+          <Settings size={20} />
+          <span className="text-sm font-semibold">Settings</span>
+        </button>
+
+        <div className="mt-4 p-2 rounded-2xl bg-slate-50 border border-slate-100 flex items-center gap-3">
+          <div className="h-10 w-10 rounded-full bg-indigo-100 border-2 border-white flex items-center justify-center text-indigo-700 font-bold">
+            SA
+          </div>
+          <div className="flex-1 min-w-0 text-left">
+            <p className="text-xs font-bold text-slate-900 truncate">
+              Sudharsan
+            </p>
+            <p className="text-[10px] font-medium text-slate-400 truncate">
+              sudharsan@gmail.com
+            </p>
+          </div>
+          <button className="p-1.5 text-slate-400 hover:text-rose-500 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer">
+            <LogOut size={16} />
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
