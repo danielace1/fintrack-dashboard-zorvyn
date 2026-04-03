@@ -16,6 +16,7 @@ import {
 import { useFinanceStore } from "../store/useFinanceStore";
 import AddTransactionModal from "../components/AddTransactionModal";
 import EmptyState from "../components/EmptyState";
+import TransactionsSkeleton from "../components/TransactionSkeleton";
 
 const Transactions = () => {
   const [search, setSearch] = useState("");
@@ -23,7 +24,7 @@ const Transactions = () => {
   const [open, setOpen] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
 
-  const { transactions, deleteTransaction, role } = useFinanceStore();
+  const { transactions, deleteTransaction, role, loading } = useFinanceStore();
 
   const filtered = useMemo(() => {
     return transactions
@@ -41,6 +42,10 @@ const Transactions = () => {
     toast.success("Transaction removed successfully");
   };
 
+  if (loading) {
+    return <TransactionsSkeleton />;
+  }
+
   return (
     <div className="space-y-6 pb-10">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -49,7 +54,7 @@ const Transactions = () => {
             Activity Ledger
           </h1>
           <p className="text-sm text-slate-500 font-medium">
-            Monitor and manage your
+            Monitor and manage your{" "}
             <span className="text-indigo-600 font-bold">financial history</span>
           </p>
         </div>

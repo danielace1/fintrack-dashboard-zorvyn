@@ -196,8 +196,8 @@ const Dashboard = () => {
                   </div>
                   <p className="text-indigo-900/80 text-sm leading-relaxed">
                     Most of your expenses come from{" "}
-                    <span className="font-extrabold text-indigo-700">
-                      {topCategory.name}
+                    <span className="font-bold text-indigo-700">
+                      {topCategory.name}{" "}
                     </span>
                     (₹{topCategory.value.toLocaleString()}). Consider optimizing
                     this area.
