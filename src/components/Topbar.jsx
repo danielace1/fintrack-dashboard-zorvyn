@@ -96,13 +96,13 @@ const Topbar = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 md:gap-3 border-l border-slate-200 pl-2 md:pl-6">
+        <div className="flex items-center md:gap-3 border-l border-slate-200 pl-1 md:pl-4">
           <button className="relative p-2 text-slate-500 hover:bg-slate-50 rounded-full transition-colors cursor-pointer">
             <Bell size={20} />
             <span className="absolute top-2 right-2.5 w-2 h-2 bg-rose-500 rounded-full border-2 border-white"></span>
           </button>
 
-          <div className="h-8 w-8 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 border border-white shadow-sm flex items-center justify-center text-white text-[10px] font-bold shrink-0">
+          <div className="size-7 md:size-8 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 border border-white shadow-sm flex items-center justify-center text-white text-xs font-semibold shrink-0">
             SA
           </div>
         </div>

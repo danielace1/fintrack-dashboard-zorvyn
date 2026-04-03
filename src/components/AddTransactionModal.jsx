@@ -71,7 +71,7 @@ const AddTransactionModal = ({ isOpen, onClose }) => {
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
             className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden z-50"
           >
-            <div className="px-8 pt-8 pb-3 flex items-center justify-between">
+            <div className="px-5 md:px-8 pt-5 md:pt-8 pb-3 flex items-center justify-between">
               <div>
                 <h2 className="text-2xl font-black text-slate-900 tracking-tight">
                   New Record
@@ -88,7 +88,7 @@ const AddTransactionModal = ({ isOpen, onClose }) => {
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="p-8 pt-2 space-y-4">
+            <form onSubmit={handleSubmit} className="p-5 md:p-8 pt-2 space-y-4">
               <div className="flex p-1 bg-slate-100 rounded-2xl border border-slate-200/50">
                 {["expense", "income"].map((type) => (
                   <button

@@ -54,7 +54,7 @@ const MainLayout = () => {
       </AnimatePresence>
 
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden relative">
-        <header className="sticky top-0 z-30 flex h-16 w-full items-center border-b border-slate-200/60 bg-white/80 backdrop-blur-md px-3">
+        <header className="sticky top-0 z-30 flex h-16 w-full items-center border-b border-slate-200/60 bg-white/80 backdrop-blur-md px-2">
           <button
             onClick={() => setIsSidebarOpen(true)}
             className="mr-2 text-slate-600 hover:bg-slate-100 rounded-lg lg:hidden transition-colors"

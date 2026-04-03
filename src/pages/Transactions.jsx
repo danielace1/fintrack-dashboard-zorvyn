@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { useFinanceStore } from "../store/useFinanceStore";
 import AddTransactionModal from "../components/AddTransactionModal";
+import EmptyState from "../components/EmptyState";
 
 const Transactions = () => {
   const [search, setSearch] = useState("");
@@ -48,7 +49,7 @@ const Transactions = () => {
             Activity Ledger
           </h1>
           <p className="text-sm text-slate-500 font-medium">
-            Monitor and manage your{" "}
+            Monitor and manage your
             <span className="text-indigo-600 font-bold">financial history</span>
           </p>
         </div>
@@ -58,6 +59,11 @@ const Transactions = () => {
             <button
               onMouseEnter={() => setShowTooltip(true)}
               onMouseLeave={() => setShowTooltip(false)}
+              onClick={() =>
+                toast("Export coming soon", {
+                  icon: "⬇️",
+                })
+              }
               className="p-2.5 text-slate-500 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 hover:border-slate-300 transition-all cursor-pointer shadow-sm"
             >
               <Download size={18} />
@@ -120,120 +126,131 @@ const Transactions = () => {
         </div>
       </div>
 
-      <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden overflow-x-auto custom-scrollbar">
-        <table className="w-full text-left border-collapse min-w-[800px]">
-          <thead>
-            <tr className="bg-slate-50/50 border-b border-slate-100">
-              <th className="px-4 md:px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest w-6 md:w-10">
-                #
-              </th>
-              <th className="px-5 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                Transaction Details
-              </th>
-              <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                Category
-              </th>
-              <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                Date
-              </th>
-              <th className="px-5 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">
-                Amount
-              </th>
-              <th className="px-5 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-50">
-            <AnimatePresence initial={false}>
-              {filtered.map((t, index) => (
-                <motion.tr
-                  layout
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  key={t.id}
-                  className="hover:bg-slate-50/80 transition-colors group"
-                >
-                  <td className="px-4 md:px-6 py-4">
-                    <span className="text-xs font-bold text-slate-300">
-                      {(index + 1).toString().padStart(2, "0")}
-                    </span>
-                  </td>
+      <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+        {filtered.length === 0 ? (
+          <EmptyState
+            onReset={() => {
+              setSearch("");
+              setFilter("all");
+            }}
+          />
+        ) : (
+          <div className="overflow-hidden overflow-x-auto">
+            <table className="w-full text-left border-collapse min-w-[800px]">
+              <thead>
+                <tr className="bg-slate-50/50 border-b border-slate-100">
+                  <th className="px-4 md:px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest w-6 md:w-10">
+                    #
+                  </th>
+                  <th className="px-5 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                    Transaction Details
+                  </th>
+                  <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                    Category
+                  </th>
+                  <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                    Date
+                  </th>
+                  <th className="px-5 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">
+                    Amount
+                  </th>
+                  <th className="px-5 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-50">
+                <AnimatePresence initial={false}>
+                  {filtered.map((t, index) => (
+                    <motion.tr
+                      layout
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      key={t.id}
+                      className="hover:bg-slate-50/80 transition-colors group"
+                    >
+                      <td className="px-4 md:px-6 py-4">
+                        <span className="text-xs font-bold text-slate-300">
+                          {(index + 1).toString().padStart(2, "0")}
+                        </span>
+                      </td>
 
-                  <td className="px-5 py-4">
-                    <div className="flex items-center gap-3">
-                      <div
+                      <td className="px-5 py-4">
+                        <div className="flex items-center gap-3">
+                          <div
+                            className={clsx(
+                              "h-9 w-9 rounded-lg flex items-center justify-center shrink-0",
+                              t.type === "income"
+                                ? "bg-emerald-50 text-emerald-600"
+                                : "bg-rose-50 text-rose-600",
+                            )}
+                          >
+                            {t.type === "income" ? (
+                              <ArrowUpCircle size={18} />
+                            ) : (
+                              <ArrowDownCircle size={18} />
+                            )}
+                          </div>
+                          <div>
+                            <p className="font-bold text-slate-800 text-sm leading-none mb-1">
+                              {t.title}
+                            </p>
+                            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-tighter">
+                              ID: TX-{t.id}
+                            </p>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td className="px-6 py-4">
+                        <span className="px-2.5 py-1 bg-white border border-slate-200 text-slate-500 rounded-lg text-[10px] font-bold uppercase tracking-wide">
+                          {t.category}
+                        </span>
+                      </td>
+
+                      <td className="px-6 py-4">
+                        <p className="text-xs text-slate-500 font-semibold italic">
+                          {dayjs(t.date).format("DD MMM, YYYY")}
+                        </p>
+                      </td>
+
+                      <td
                         className={clsx(
-                          "h-9 w-9 rounded-lg flex items-center justify-center shrink-0",
+                          "px-6 py-4 text-sm font-bold text-right",
                           t.type === "income"
-                            ? "bg-emerald-50 text-emerald-600"
-                            : "bg-rose-50 text-rose-600",
+                            ? "text-emerald-600"
+                            : "text-slate-900",
                         )}
                       >
-                        {t.type === "income" ? (
-                          <ArrowUpCircle size={18} />
-                        ) : (
-                          <ArrowDownCircle size={18} />
-                        )}
-                      </div>
-                      <div>
-                        <p className="font-bold text-slate-800 text-sm leading-none mb-1">
-                          {t.title}
-                        </p>
-                        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-tighter">
-                          ID: TX-{t.id}
-                        </p>
-                      </div>
-                    </div>
-                  </td>
+                        {t.type === "income" ? "+" : "-"} ₹
+                        {t.amount.toLocaleString()}
+                      </td>
 
-                  <td className="px-6 py-4">
-                    <span className="px-2.5 py-1 bg-white border border-slate-200 text-slate-500 rounded-lg text-[10px] font-bold uppercase tracking-wide">
-                      {t.category}
-                    </span>
-                  </td>
-
-                  <td className="px-6 py-4">
-                    <p className="text-xs text-slate-500 font-semibold italic">
-                      {dayjs(t.date).format("DD MMM, YYYY")}
-                    </p>
-                  </td>
-
-                  <td
-                    className={clsx(
-                      "px-6 py-4 text-sm font-bold text-right",
-                      t.type === "income"
-                        ? "text-emerald-600"
-                        : "text-slate-900",
-                    )}
-                  >
-                    {t.type === "income" ? "+" : "-"} ₹
-                    {t.amount.toLocaleString()}
-                  </td>
-
-                  <td className="px-6 py-4 text-right">
-                    <div className="flex justify-end items-center gap-2">
-                      {role === "admin" ? (
-                        <button
-                          onClick={() => handleDelete(t.id)}
-                          className="p-2 text-slate-400 hover:text-rose-500 hover:bg-rose-100/50 rounded-lg transition-all cursor-pointer opacity-0 group-hover:opacity-100"
-                        >
-                          <Trash2 size={16} />
-                        </button>
-                      ) : (
-                        <div
-                          className="h-2 w-2 rounded-full bg-slate-200"
-                          title="Viewer Only"
-                        />
-                      )}
-                    </div>
-                  </td>
-                </motion.tr>
-              ))}
-            </AnimatePresence>
-          </tbody>
-        </table>
+                      <td className="px-6 py-4 text-right">
+                        <div className="flex justify-end items-center gap-2">
+                          {role === "admin" ? (
+                            <button
+                              onClick={() => handleDelete(t.id)}
+                              className="p-2 text-slate-400 hover:text-rose-500 hover:bg-rose-100/50 rounded-lg transition-all cursor-pointer opacity-100 lg:opacity-0 lg:group-hover:opacity-100"
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          ) : (
+                            <div
+                              className="h-2 w-2 rounded-full bg-slate-200"
+                              title="Viewer Only"
+                            />
+                          )}
+                        </div>
+                      </td>
+                    </motion.tr>
+                  ))}
+                </AnimatePresence>
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
 
       <AddTransactionModal isOpen={open} onClose={() => setOpen(false)} />
