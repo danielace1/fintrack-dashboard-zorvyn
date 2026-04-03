@@ -1,1 +1,17 @@
 @import "tailwindcss";
+
+.admin-btns {
+  @apply flex items-center gap-2 bg-indigo-600 text-white px-4 py-2.5 rounded-xl text-sm font-semibold shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-all cursor-pointer;
+}
+
+.label {
+  @apply text-xs font-medium text-slate-400 uppercase tracking-widest ml-1;
+}
+
+.form-icons {
+  @apply absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-indigo-500 transition-colors;
+}
+
+.input-field {
+  @apply w-full bg-slate-50 border border-slate-200 rounded-2xl py-2.5 pl-10 pr-3 text-sm font-semibold outline-none focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-50 transition-all;
+}

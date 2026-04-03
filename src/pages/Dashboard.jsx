@@ -1,5 +1,6 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "react-router";
 import dayjs from "dayjs";
 import {
   Wallet,
@@ -10,19 +11,14 @@ import {
   Calendar,
 } from "lucide-react";
 import { useFinanceStore } from "../store/useFinanceStore";
+import DashboardSkeleton from "../components/DashboardSkeleton";
 import SummaryCard from "../components/SummaryCard";
 import { FinanceChart } from "../components/FinanceChart";
 import { CategoryPie } from "../components/CategoryPie";
-import DashboardSkeleton from "../components/DashboardSkeleton";
-import { Link } from "react-router";
 
 const Dashboard = () => {
   const [timeframe, setTimeframe] = useState("all");
-  const { role, transactions, loadTransactions, loading } = useFinanceStore();
-
-  useEffect(() => {
-    loadTransactions();
-  }, []);
+  const { role, transactions, loading } = useFinanceStore();
 
   const filteredData = useMemo(() => {
     if (timeframe === "all") return transactions;
@@ -124,7 +120,7 @@ const Dashboard = () => {
 
           {role === "admin" && (
             <Link to="/transactions">
-              <button className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2.5 rounded-xl font-semibold shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-all cursor-pointer">
+              <button className="admin-btns">
                 <Plus size={17} />
                 <span className="hidden sm:inline">Add Transaction</span>
               </button>

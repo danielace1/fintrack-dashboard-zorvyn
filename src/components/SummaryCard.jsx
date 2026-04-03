@@ -19,7 +19,7 @@ const SummaryCard = ({ title, value, icon: Icon, color, trend }) => {
             {title}
           </p>
 
-          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">
+          <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
             ₹ {value.toLocaleString()}
           </h2>
 

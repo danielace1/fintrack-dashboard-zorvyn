@@ -1,16 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router";
+import { Menu, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { useFinanceStore } from "../store/useFinanceStore";
 
 const MainLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { loadTransactions } = useFinanceStore();
   const location = useLocation();
 
+  useEffect(() => {
+    loadTransactions();
+  }, []);
+
   return (
-    <div className="flex h-screen bg-[#F8FAFC] text-slate-900 font-sans antialiased">
+    <div className="2xl:container 2xl:mx-auto flex h-screen bg-[#F8FAFC] text-slate-900 font-sans antialiased">
       <aside className="hidden lg:flex h-full w-64 border-r border-slate-200/60 bg-white">
         <Sidebar onClose={() => setIsSidebarOpen(false)} />
       </aside>
