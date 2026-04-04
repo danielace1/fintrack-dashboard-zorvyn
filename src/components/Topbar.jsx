@@ -12,6 +12,7 @@ const Topbar = () => {
     "/": "Overview",
     "/transactions": "Transactions",
     "/insights": "Insights",
+    "/settings": "Settings",
   };
 
   return (

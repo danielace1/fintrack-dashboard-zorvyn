@@ -69,7 +69,12 @@ const Insights = () => {
 
   if (loading) return <InsightsSkeleton />;
 
-  if (!insights) return <EmptyState />;
+  if (!insights)
+    return (
+      <div className="min-h-[70vh] flex items-center justify-center">
+        <EmptyState type="insights" />
+      </div>
+    );
 
   const metrics = [
     {
@@ -106,7 +111,7 @@ const Insights = () => {
             <Sparkles className="text-indigo-500" size={22} />
             Smart Insights
           </h1>
-          <p className="text-slate-500 text-sm font-medium">
+          <p className="text-slate-400 text-sm font-medium">
             Personalized financial patterns & optimization tips
           </p>
         </div>
@@ -155,11 +160,13 @@ const Insights = () => {
               {insights.savingsRate.toFixed(0)}%
             </p>
             <div className="w-full bg-white/10 h-1 md:h-1.5 rounded-full mt-1 md:mt-2">
-              <div
+              <motion.div
                 className="bg-indigo-500 h-full rounded-full"
-                style={{
+                initial={{ width: 0 }}
+                animate={{
                   width: `${Math.max(0, Math.min(100, insights.savingsRate))}%`,
                 }}
+                transition={{ duration: 0.8 }}
               />
             </div>
           </div>
@@ -167,7 +174,7 @@ const Insights = () => {
       </motion.div>
 
       {/* Metrics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6">
         {metrics.map((m, i) => (
           <motion.div
             key={i}
@@ -198,9 +205,19 @@ const Insights = () => {
         ))}
       </div>
 
+      <motion.div className="bg-indigo-50 border border-indigo-200 p-3 md:p-5 rounded-2xl">
+        <p className="text-xs md:text-sm text-indigo-800 font-semibold md:font-medium">
+          If you maintain your current savings rate, you could save{" "}
+          <span className="font-bold">
+            ₹{(insights.balance * 12).toLocaleString()}
+          </span>{" "}
+          in the next year.
+        </p>
+      </motion.div>
+
       {/* Smart Action Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-emerald-50 border border-emerald-100 p-4 rounded-[2rem] flex gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+        <div className="bg-emerald-50 border border-emerald-200 p-3 md:p-4 rounded-[2rem] flex gap-3">
           <div className="size-10 bg-white rounded-2xl flex items-center justify-center text-emerald-600 shadow-sm shrink-0">
             <TrendingUp size={20} />
           </div>
@@ -219,7 +236,7 @@ const Insights = () => {
           </div>
         </div>
 
-        <div className="bg-rose-50 border border-rose-100 p-4 rounded-[2rem] flex gap-3">
+        <div className="bg-rose-50 border border-rose-200 p-3 md:p-4 rounded-[2rem] flex gap-3">
           <div className="size-10 bg-white rounded-2xl flex items-center justify-center text-rose-600 shadow-sm shrink-0">
             <AlertTriangle size={20} />
           </div>

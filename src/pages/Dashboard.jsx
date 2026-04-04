@@ -101,6 +101,7 @@ const Dashboard = () => {
           </p>
         </div>
 
+        {/* Timeframe & Button */}
         <div className="flex items-center gap-3">
           <div className="flex bg-slate-100 p-1 rounded-xl border border-slate-200">
             {["7d", "30d", "all"].map((t) => (

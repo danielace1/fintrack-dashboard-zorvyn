@@ -50,6 +50,10 @@ const InsightsSkeleton = () => {
         ))}
       </div>
 
+      <div className="bg-slate-50 border border-slate-100 p-5 rounded-2xl space-y-2">
+        <Skeleton className="h-4 w-full max-w-md" />
+      </div>
+
       {/* Suggestions */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {[1, 2].map((i) => (

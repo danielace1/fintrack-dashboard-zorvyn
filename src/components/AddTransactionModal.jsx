@@ -10,19 +10,24 @@ import {
   ArrowUpCircle,
   ArrowDownCircle,
   IndianRupee,
+  Edit3,
 } from "lucide-react";
 import { useFinanceStore } from "../store/useFinanceStore";
 
-const AddTransactionModal = ({ isOpen, onClose }) => {
-  const { addTransaction } = useFinanceStore();
-
-  const [form, setForm] = useState({
-    title: "",
-    amount: "",
-    category: "",
-    type: "expense",
-    date: new Date().toISOString().split("T")[0],
+const AddTransactionModal = ({ isOpen, onClose, initialData = null }) => {
+  const getInitialForm = (data) => ({
+    title: data?.title || "",
+    amount: data?.amount || "",
+    category: data?.category || "",
+    type: data?.type || "expense",
+    date: data?.date
+      ? data.date.split("T")[0]
+      : new Date().toISOString().split("T")[0],
   });
+
+  const [form, setForm] = useState(() => getInitialForm(initialData));
+
+  const { addTransaction, updateTransaction } = useFinanceStore();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -30,27 +35,33 @@ const AddTransactionModal = ({ isOpen, onClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Basic validation
     if (!form.title || !form.amount || !form.category || !form.date) {
       toast.error("Please fill all fields");
       return;
     }
 
-    addTransaction({
-      ...form,
-      id: Date.now(),
-      amount: Number(form.amount),
-    });
+    if (initialData) {
+      // Update existing transaction
+      updateTransaction(initialData.id, {
+        ...form,
+        amount: Number(form.amount),
+      });
+      toast.success("Transaction updated successfully");
+    } else {
+      // Add new transaction
+      addTransaction({
+        ...form,
+        id: Date.now(),
+        amount: Number(form.amount),
+      });
+      toast.success("Transaction added successfully");
+    }
 
-    toast.success("Transaction added successfully");
     onClose();
-    setForm({
-      title: "",
-      amount: "",
-      category: "",
-      type: "expense",
-      date: new Date().toISOString().split("T")[0],
-    });
   };
+
+  const isEdit = !!initialData;
 
   return (
     <AnimatePresence>
@@ -71,13 +82,15 @@ const AddTransactionModal = ({ isOpen, onClose }) => {
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
             className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden z-50"
           >
-            <div className="px-5 md:px-8 pt-5 md:pt-8 pb-3 flex items-center justify-between">
+            <div className="px-5 md:px-8 pt-5 md:pt-8 pb-3 flex items-start justify-between">
               <div>
                 <h2 className="text-2xl font-black text-slate-900 tracking-tight">
-                  New Record
+                  {isEdit ? "Edit Record" : "New Record"}
                 </h2>
                 <p className="mt-1 text-sm text-slate-400 font-medium">
-                  Add to your activity ledger
+                  {isEdit
+                    ? "Update your activity ledger"
+                    : "Add to your activity ledger"}
                 </p>
               </div>
               <button
@@ -119,7 +132,7 @@ const AddTransactionModal = ({ isOpen, onClose }) => {
                   <label className="label">Title</label>
                   <div className="mt-1 relative group">
                     <div className="form-icons">
-                      <Plus size={15} />
+                      {isEdit ? <Edit3 size={15} /> : <Plus size={15} />}
                     </div>
                     <input
                       name="title"
@@ -184,9 +197,9 @@ const AddTransactionModal = ({ isOpen, onClose }) => {
 
               <button
                 type="submit"
-                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-4 rounded-2xl font-bold text-sm uppercase tracking-widest shadow-xl shadow-indigo-100 transition-all transform active:scale-[0.98] cursor-pointer"
+                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-4 rounded-2xl font-bold text-sm uppercase tracking-wider shadow-xl shadow-indigo-100 transition-all transform active:scale-[0.98] cursor-pointer"
               >
-                Save Transaction
+                {isEdit ? "Update Transaction" : "Save Transaction"}
               </button>
             </form>
           </motion.div>

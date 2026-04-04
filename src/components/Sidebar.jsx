@@ -19,6 +19,8 @@ const Sidebar = ({ onClose }) => {
     { name: "Insights", icon: BarChart3, path: "/insights" },
   ];
 
+  const isSettingsActive = location.pathname === "/settings";
+
   return (
     <div className="h-full flex flex-col bg-white p-4 w-full">
       <div className="flex items-center gap-3 px-2 mb-10">
@@ -75,23 +77,30 @@ const Sidebar = ({ onClose }) => {
       </nav>
 
       <div className="pt-6 mt-6 border-t border-slate-100 space-y-1">
-        <button
-          onClick={onClose}
-          className="w-full flex items-center gap-3 p-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 transition-all cursor-pointer"
-        >
-          <Settings size={20} />
-          <span className="text-sm font-semibold">Settings</span>
-        </button>
+        <Link to="/settings">
+          <button
+            onClick={onClose}
+            className={clsx(
+              "flex items-center gap-2 p-3 rounded-xl transition-all duration-200 cursor-pointer w-full",
+              isSettingsActive
+                ? "bg-indigo-50 text-indigo-600 shadow-sm shadow-indigo-100/50"
+                : "text-slate-500 hover:bg-slate-50 hover:text-slate-900",
+            )}
+          >
+            <Settings size={20} />
+            <span className="text-sm font-semibold">Settings</span>
+          </button>
+        </Link>
 
         <div className="mt-4 p-2 rounded-2xl bg-slate-50 border border-slate-100 flex items-center gap-3">
-          <div className="h-10 w-10 rounded-full bg-indigo-100 border-2 border-white flex items-center justify-center text-indigo-700 font-bold">
+          <div className="h-10 w-10 text-sm rounded-full bg-indigo-100 border-2 border-white flex items-center justify-center text-indigo-700 font-semibold">
             SA
           </div>
           <div className="flex-1 min-w-0 text-left">
-            <p className="text-xs font-bold text-slate-900 truncate">
+            <p className="text-sm font-semibold text-slate-900 truncate">
               Sudharsan
             </p>
-            <p className="text-[10px] font-medium text-slate-400 truncate">
+            <p className="text-[11px] font-normal text-slate-400 truncate">
               sudharsan@gmail.com
             </p>
           </div>
