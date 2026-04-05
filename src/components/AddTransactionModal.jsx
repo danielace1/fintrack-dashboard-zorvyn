@@ -54,6 +54,7 @@ const AddTransactionModal = ({ isOpen, onClose, initialData = null }) => {
         ...form,
         id: Date.now(),
         amount: Number(form.amount),
+        createdAt: Date.now(),
       });
       toast.success("Transaction added successfully");
     }

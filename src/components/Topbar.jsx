@@ -1,6 +1,6 @@
 import { useLocation } from "react-router";
 import { useFinanceStore } from "../store/useFinanceStore";
-import { ShieldCheck, Eye, Bell, Search, ChevronRight } from "lucide-react";
+import { ShieldCheck, Eye, Bell, Search } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import clsx from "clsx";
 

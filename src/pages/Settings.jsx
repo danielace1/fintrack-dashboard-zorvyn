@@ -1,4 +1,6 @@
 import { motion } from "framer-motion";
+import toast from "react-hot-toast";
+import clsx from "clsx";
 import {
   User,
   Shield,
@@ -12,8 +14,6 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { useFinanceStore } from "../store/useFinanceStore";
-import toast from "react-hot-toast";
-import clsx from "clsx";
 
 const Settings = () => {
   const { role, setRole } = useFinanceStore();

@@ -12,12 +12,12 @@ import {
   ArrowUpCircle,
   ArrowDownCircle,
   ChevronDown,
-  SlidersHorizontal,
   RotateCcw,
   Edit3,
 } from "lucide-react";
 import { useFinanceStore } from "../store/useFinanceStore";
 import AddTransactionModal from "../components/AddTransactionModal";
+import DeleteConfirmModal from "../components/DeleteConfirmModal";
 import EmptyState from "../components/EmptyState";
 import TransactionsSkeleton from "../components/TransactionSkeleton";
 
@@ -29,6 +29,7 @@ const Transactions = () => {
   const [open, setOpen] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
+  const [deleteId, setDeleteId] = useState(null);
 
   const { transactions, deleteTransaction, role, loading } = useFinanceStore();
 
@@ -37,11 +38,21 @@ const Transactions = () => {
 
     let result = [...transactions];
 
-    // search
+    // search by title, category, amount, date
     if (search.trim()) {
       const query = search.toLowerCase();
+
       result = result.filter((t) =>
-        (t.title || "").toLowerCase().includes(query),
+        [
+          t.title,
+          t.category,
+          t.type,
+          t.amount?.toString(),
+          dayjs(t.date).format("DD MMM YYYY"),
+        ]
+          .join(" ")
+          .toLowerCase()
+          .includes(query),
       );
     }
 
@@ -56,11 +67,11 @@ const Transactions = () => {
 
     switch (sortOrder) {
       case "newest":
-        result.sort((a, b) => dayjs(b.date).unix() - dayjs(a.date).unix());
+        result.sort((a, b) => new Date(b.date) - new Date(a.date));
         break;
 
       case "oldest":
-        result.sort((a, b) => dayjs(a.date).unix() - dayjs(b.date).unix());
+        result.sort((a, b) => new Date(a.date) - new Date(b.date));
         break;
 
       case "high":
@@ -78,18 +89,14 @@ const Transactions = () => {
     return result;
   }, [transactions, search, filter, category, sortOrder]);
 
+  const categories = useMemo(() => {
+    const unique = new Set(transactions.map((t) => t.category));
+    return ["all", ...unique];
+  }, [transactions]);
+
   const handleEdit = (transaction) => {
     setSelectedTransaction(transaction);
     setOpen(true);
-  };
-
-  const handleDelete = (id) => {
-    if (role !== "admin") {
-      toast.error("Access Denied");
-      return;
-    }
-    deleteTransaction(id);
-    toast.success("Transaction removed successfully");
   };
 
   // CSV Export
@@ -192,7 +199,7 @@ const Transactions = () => {
           />
           <input
             type="text"
-            placeholder="Search ledger..."
+            placeholder="Search by transaction, category, date, amount..."
             className="w-full bg-slate-50 border border-slate-100 outline-none pl-10 pr-4 py-2 rounded-xl text-sm transition-all focus:bg-white focus:border-indigo-200 focus:ring-4 focus:ring-indigo-50/50"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -227,11 +234,11 @@ const Transactions = () => {
               onChange={(e) => setCategory(e.target.value)}
               className="bg-slate-50 border border-slate-100 pl-3 pr-8 py-2 rounded-xl text-xs font-semibold text-slate-600 appearance-none cursor-pointer focus:border-indigo-200 focus:bg-white transition-all outline-none"
             >
-              <option value="all">All Categories</option>
-              <option value="Food">Food</option>
-              <option value="Shopping">Shopping</option>
-              <option value="Salary">Salary</option>
-              <option value="Bills">Bills</option>
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat === "all" ? "All Categories" : cat}
+                </option>
+              ))}
             </select>
             <div className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
               <ChevronDown size={14} />
@@ -285,7 +292,7 @@ const Transactions = () => {
           <div className="overflow-hidden overflow-x-auto">
             <table className="w-full text-left border-collapse min-w-[800px]">
               <thead>
-                <tr className="bg-slate-50/50 border-b border-slate-100">
+                <tr className="bg-slate-50/50 border-b border-slate-200">
                   <th className="px-4 md:px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest w-6 md:w-10">
                     #
                   </th>
@@ -306,7 +313,7 @@ const Transactions = () => {
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-50">
+              <tbody className="divide-y divide-slate-100">
                 <AnimatePresence initial={false}>
                   {filtered.map((t, index) => (
                     <motion.tr
@@ -380,13 +387,15 @@ const Transactions = () => {
                             <>
                               <button
                                 onClick={() => handleEdit(t)}
-                                className="p-2 text-slate-400 hover:text-indigo-500 hover:bg-indigo-50 rounded-lg transition-all cursor-pointer lg:opacity-0 lg:group-hover:opacity-100"
+                                title="Edit"
+                                className="p-2 text-slate-400 hover:text-indigo-500 hover:bg-indigo-50 rounded-lg transition-all cursor-pointer"
                               >
                                 <Edit3 size={15} />
                               </button>
                               <button
-                                onClick={() => handleDelete(t.id)}
-                                className="p-2 text-slate-400 hover:text-rose-500 hover:bg-rose-100/50 rounded-lg transition-all cursor-pointer opacity-100 lg:opacity-0 lg:group-hover:opacity-100"
+                                onClick={() => setDeleteId(t.id)}
+                                title="Delete"
+                                className="p-2 text-slate-400 hover:text-rose-500 hover:bg-rose-100/50 rounded-lg transition-all cursor-pointer opacity-100"
                               >
                                 <Trash2 size={15} />
                               </button>
@@ -416,6 +425,12 @@ const Transactions = () => {
           setSelectedTransaction(null);
         }}
         initialData={selectedTransaction}
+      />
+
+      <DeleteConfirmModal
+        deleteId={deleteId}
+        setDeleteId={setDeleteId}
+        deleteTransaction={deleteTransaction}
       />
     </div>
   );
