@@ -22,7 +22,7 @@ const AddTransactionModal = ({ isOpen, onClose, initialData = null }) => {
     type: data?.type || "expense",
     date: data?.date
       ? data.date.split("T")[0]
-      : new Date().toISOString().split("T")[0],
+      : new Date().toLocaleDateString("en-CA"), // Format: YYYY-MM-DD
   });
 
   const [form, setForm] = useState(() => getInitialForm(initialData));
@@ -46,6 +46,7 @@ const AddTransactionModal = ({ isOpen, onClose, initialData = null }) => {
       updateTransaction(initialData.id, {
         ...form,
         amount: Number(form.amount),
+        createdAt: initialData.createdAt,
       });
       toast.success("Transaction updated successfully");
     } else {
@@ -59,6 +60,7 @@ const AddTransactionModal = ({ isOpen, onClose, initialData = null }) => {
       toast.success("Transaction added successfully");
     }
 
+    setForm(getInitialForm(null));
     onClose();
   };
 

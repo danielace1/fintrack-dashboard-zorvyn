@@ -67,11 +67,11 @@ const Transactions = () => {
 
     switch (sortOrder) {
       case "newest":
-        result.sort((a, b) => new Date(b.date) - new Date(a.date));
+        result.sort((a, b) => b.createdAt - a.createdAt);
         break;
 
       case "oldest":
-        result.sort((a, b) => new Date(a.date) - new Date(b.date));
+        result.sort((a, b) => a.createdAt - b.createdAt);
         break;
 
       case "high":

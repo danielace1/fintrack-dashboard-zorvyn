@@ -6,6 +6,7 @@ export const transactions = [
     category: "Salary",
     type: "income",
     date: "2026-03-02",
+    createdAt: 1772409600000,
   },
   {
     id: 2,
@@ -14,6 +15,7 @@ export const transactions = [
     category: "Freelance",
     type: "income",
     date: "2026-03-10",
+    createdAt: 1773100800000,
   },
   {
     id: 3,
@@ -21,7 +23,8 @@ export const transactions = [
     amount: 450,
     category: "Food",
     type: "expense",
-    date: "2026-03-12",
+    date: "2026-03-10",
+    createdAt: 1773273600000,
   },
   {
     id: 4,
@@ -29,7 +32,8 @@ export const transactions = [
     amount: 2200,
     category: "Shopping",
     type: "expense",
-    date: "2026-03-13",
+    date: "2026-03-12",
+    createdAt: 1773360000000,
   },
   {
     id: 5,
@@ -38,6 +42,7 @@ export const transactions = [
     category: "Bills",
     type: "expense",
     date: "2026-03-15",
+    createdAt: 1773532800000,
   },
   {
     id: 6,
@@ -46,6 +51,7 @@ export const transactions = [
     category: "Entertainment",
     type: "expense",
     date: "2026-03-19",
+    createdAt: 1773878400000,
   },
   {
     id: 7,
@@ -53,7 +59,8 @@ export const transactions = [
     amount: 300,
     category: "Travel",
     type: "expense",
-    date: "2026-03-21",
+    date: "2026-03-20",
+    createdAt: 1774051200000,
   },
   {
     id: 8,
@@ -62,6 +69,7 @@ export const transactions = [
     category: "Investment",
     type: "income",
     date: "2026-03-22",
+    createdAt: 1774137600000,
   },
   {
     id: 9,
@@ -69,7 +77,8 @@ export const transactions = [
     amount: 1500,
     category: "Health",
     type: "expense",
-    date: "2026-04-01",
+    date: "2026-04-02",
+    createdAt: 1774915200000,
   },
   {
     id: 10,
@@ -78,6 +87,7 @@ export const transactions = [
     category: "Shopping",
     type: "expense",
     date: "2026-04-05",
+    createdAt: 1775260800000,
   },
 ];
 
