@@ -73,6 +73,15 @@ export const transactions = [
   },
   {
     id: 9,
+    title: "Salary",
+    amount: 45000,
+    category: "Salary",
+    type: "income",
+    date: "2026-04-01",
+    createdAt: 1774237600000,
+  },
+  {
+    id: 10,
     title: "Gym Membership",
     amount: 1500,
     category: "Health",
@@ -81,7 +90,7 @@ export const transactions = [
     createdAt: 1774915200000,
   },
   {
-    id: 10,
+    id: 11,
     title: "Amazon Purchase",
     amount: 3200,
     category: "Shopping",
